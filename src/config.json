@@ -1,0 +1,11 @@
+{
+    "dataFlag": {
+        "sample": "s",
+        "predict": "p",
+        "inverse": "i",
+        "optimize": "o",
+        "inverseOptimize": "k",
+        "original": ""
+    },
+    "serverURL": "http://127.0.0.1:5000"
+}
