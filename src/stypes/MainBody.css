@@ -1,0 +1,13 @@
+.MainBody{
+    background-color: rgba(150,150,150,0.5);
+}
+
+.LeftBody{
+    background-color: rgba(145, 70, 70, 0.5);
+    padding: 4px;
+}
+
+.RightBody{
+    background-color: rgba(34, 21, 21, 0.5);
+    padding: 4px;
+}

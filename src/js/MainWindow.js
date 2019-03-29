@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import '../stypes/MainWindow.css'
+import NewHeader from './Header';
+import MainBody from './MainBody'
+import configuration from '../config.json'
 
 class MainWindow extends Component {
     constructor(props){
@@ -13,13 +16,8 @@ class MainWindow extends Component {
         const statesAll = this.props.stateAll;
         return(
             <div id="MainWindow">
-                <div className="pageHeader"> 
-                    <img className="nusLogo" src={require('../image/nus_logo.png')}  alt="logo"/>
-                    <font className="projectTitle">Sound localization</font>
-                </div>
-                <body>
-                    <h1>Hello world!</h1>
-                </body>
+                <NewHeader title={configuration.titleName}></NewHeader>
+                <MainBody></MainBody>
             </div>
         )
     }

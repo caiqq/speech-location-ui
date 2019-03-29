@@ -1,0 +1,28 @@
+.pageHeader{
+    background-color: rgba(235, 235, 243, 0.801);
+    width: 100%;
+    height: 30px;
+}
+
+.projectTitle{   
+    font-size: 20px;
+    font-weight: normal;
+    padding-left: 10px;
+    color: rgb(31, 28, 28);
+}
+
+.nusLogo{
+    opacity:1;
+    width: 80px;
+    height: 20px;
+    padding-left: 16px;
+    z-index: 10;
+}
+
+.splitline{
+    margin:0px;
+    height:1px;
+    border:0px;
+    background-color:#D5D5D5;
+    color:#D5D5D5;
+}
