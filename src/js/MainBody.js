@@ -10,10 +10,10 @@ class MainBody extends Component {
         return(
             <Row type="flex" justify="start">
                 <Col span={14}>
-                    <DataPanel></DataPanel>
+                    <LocalizationPanel></LocalizationPanel>
                 </Col>
                 <Col span={10}>
-                    <LocalizationPanel></LocalizationPanel>
+                    <DataPanel></DataPanel>                    
                 </Col>
             </Row>
         )
