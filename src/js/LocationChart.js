@@ -48,11 +48,11 @@ class LocationChart extends Component {
             .attr("r", r);
 
 
-        gr.append("text")
-            .attr("y", function(d) { return -r(d) - 4; })
-            .attr("transform", "rotate(45)")
-            .style("text-anchor", "middle")
-            .text(function(d) { return d; });
+        // gr.append("text")
+        //     .attr("y", function(d) { return -r(d) - 4; })
+        //     .attr("transform", "rotate(45)")
+        //     .style("text-anchor", "middle")
+        //     .text(function(d) { return d; });
 
         var ga = svg.append("g")
             .attr("class", "a axis")
@@ -73,9 +73,48 @@ class LocationChart extends Component {
             .text(function(d) {
                 return d + "°"; });
         
-        //  add data
 
-        var designData = [[172, 200],[2.86, 5.06]];
+        // central sound lisener
+        // var central_positions = [-45, 45, 135, 225]
+        // for(var position in central_positions){
+        //     console.log("position: ", position)
+        //     var myRadius = 30
+        //     var xIndex = myRadius*Math.cos(position*Math.PI/180)
+        //     var yIndex = myRadius*Math.sin(position*Math.PI/180)
+        //     svg.append("circle")
+        //    .attr("r", 6)
+        //    .attr("class", "central_circle")
+        //    .attr("transform", "translate(" + xIndex + "," + yIndex + ")")
+        // }
+        var myRadius = 30
+        var xIndex = myRadius*Math.cos(-45*Math.PI/180)
+        var yIndex = myRadius*Math.sin(-45*Math.PI/180)
+        svg.append("circle")
+            .attr("r", 6)
+            .attr("class", "central_circle")
+            .attr("transform", "translate(" + xIndex + "," + yIndex + ")")
+        var xIndex2 = myRadius*Math.cos(45*Math.PI/180)
+        var yIndex2 = myRadius*Math.sin(45*Math.PI/180)
+        svg.append("circle")
+            .attr("r", 6)
+            .attr("class", "central_circle")
+            .attr("transform", "translate(" + xIndex2 + "," + yIndex2 + ")")
+        var xIndex3 = myRadius*Math.cos(135*Math.PI/180)
+        var yIndex3 = myRadius*Math.sin(135*Math.PI/180)
+        svg.append("circle")
+            .attr("r", 6)
+            .attr("class", "central_circle")
+            .attr("transform", "translate(" + xIndex3 + "," + yIndex3 + ")")
+        var xIndex4 = myRadius*Math.cos(225*Math.PI/180)
+        var yIndex4 = myRadius*Math.sin(225*Math.PI/180)
+        svg.append("circle")
+            .attr("r", 6)
+            .attr("class", "central_circle")
+            .attr("transform", "translate(" + xIndex4 + "," + yIndex4 + ")")
+
+        //  add data
+        // var designData = [[172, 200],[2.86, 5.06]];
+        var designData = [[0, 30],[0, 0]];
         var data = [
             [maxVal*Math.cos(designData[0][0]*Math.PI/180), maxVal*Math.sin(designData[0][0]*Math.PI/180)],
             [maxVal*Math.cos(designData[0][1]*Math.PI/180), maxVal*Math.sin(designData[0][1]*Math.PI/180)],
@@ -95,7 +134,17 @@ class LocationChart extends Component {
             .attr("transform", function(d) {
                 return "rotate(" + (-90) + ")"; });
 
-
+        // add location data
+        var angle = -70
+        var xIndex = radius*Math.cos(angle*Math.PI/180)
+        var yIndex = radius*Math.sin(angle*Math.PI/180)
+        var location_circle = svg.append("circle")
+                            .attr("r", 6)
+                            .attr("class", "location_circle")
+                            .attr("transform", "translate(" + xIndex + "," + yIndex + ")")
+        
+        // location_circle.append("image")
+        //                 .attr("xlink:href", require('../image/nus_logo.png'))
         // var yHeight = this.props.height - this.props.margin.top - this.props.margin.bottom;
         // this.setState({
         //   yRange: this.props.yRange,

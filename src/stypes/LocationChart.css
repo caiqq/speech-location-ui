@@ -19,3 +19,11 @@
     stroke: rgba(255, 0, 0, 0.8);
     stroke-width: 2px;
 }
+
+.location_circle {
+    fill: rgb(218, 206, 41)
+}
+
+.central_circle {
+    fill: rgb(31, 27, 27)
+}
