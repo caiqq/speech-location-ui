@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import '../stypes/LocalizationPanel.css'
 import LocationChart from './LocationChart'
+import {Row, Col, Button } from 'antd';
 
 class LocalizationPanel extends Component {
     constructor(props){
@@ -14,7 +15,7 @@ class LocalizationPanel extends Component {
     onResize = () => {
       this.setState({
         screenWidth: window.innerWidth*0.56,
-        screenHeight: window.innerHeight*0.95,
+        screenHeight: window.innerHeight*0.9,
       })
     }
 
@@ -31,6 +32,10 @@ class LocalizationPanel extends Component {
                 screenWidth={this.state.screenWidth}
                 screenHeight={this.state.screenHeight}
               />
+              <Row type="flex" justify="space-around">
+                <Col span={4}><Button type="primary" className="localizationBtn">Load</Button></Col>
+                <Col span={4}><Button type="primary" className="localizationBtn">Evalution</Button></Col>
+              </Row>             
             </div>
         )
     }
