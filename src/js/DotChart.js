@@ -16,7 +16,28 @@ import {
   } from "bizcharts"
 
 class DotChart extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            dot_data: [],
+            times: props.times,
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        var dataAll = this.createDatas(nextProps)
+        this.setState({
+            dot_data: dataAll,
+            times: nextProps.times,
+        })
+    }
 
+    createDatas(datas){
+        var datasAll = []
+        for(var i in datasAll[this.state.times]){
+
+        }
+        return datasAll
+    }
     render(){
         var data = [{"height": 10, "weight": 10}, {"height": 5, "weight": 10}, {"height": 3, "weight": 3}]
         return(

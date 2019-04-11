@@ -6,6 +6,10 @@
 }
 
 .localizationBtn {
-    height: 40px;
+    height: 30px;
     width: 90px;
+}
+
+.uploadInput {
+    display: inline;
 }

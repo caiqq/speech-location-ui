@@ -1,11 +1,16 @@
 {
-    "dataFlag": {
-        "sample": "s",
-        "predict": "p",
-        "inverse": "i",
-        "optimize": "o",
-        "inverseOptimize": "k",
-        "original": ""
+    "action": {
+        "upload": "upload",
+        "evalution": "evalution"
+    },
+    "states": {
+        "target": "target",
+        "conv1": "conv1",
+        "conv2": "conv2",
+        "conv3": "conv3",
+        "conv4": "conv4",
+        "out_prob": "out_prob",
+        "max_out": "max_out"
     },
     "serverURL": "http://127.0.0.1:5000",
     "titleName": "Sound Localization"

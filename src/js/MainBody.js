@@ -7,13 +7,15 @@ import LocalizationPanel from './LocalizationPanel'
 
 class MainBody extends Component {
     render(){
+        const statesAll = this.props.stateAll;
+        console.log("mainbody render!")
         return(
             <Row type="flex" justify="start">
                 <Col span={14}>
-                    <LocalizationPanel></LocalizationPanel>
+                    <LocalizationPanel stateAll={statesAll}></LocalizationPanel>
                 </Col>
                 <Col span={10}>
-                    <DataPanel></DataPanel>                    
+                    <DataPanel stateAll={statesAll}></DataPanel>                    
                 </Col>
             </Row>
         )

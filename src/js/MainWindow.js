@@ -13,11 +13,12 @@ class MainWindow extends Component {
     }
 
     render(){
-        const statesAll = this.props.stateAll;
+        const statesAll = this.props.stateAll.project;
+        console.log("mainwindow render!")
         return(
             <div id="MainWindow">
                 <NewHeader title={configuration.titleName}></NewHeader>
-                <MainBody></MainBody>
+                <MainBody stateAll={statesAll}></MainBody>
             </div>
         )
     }

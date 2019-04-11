@@ -16,14 +16,21 @@ const options = {
 
 /**
  * 
- * @param {*} data 
+ * @param {*} file_name 
  * @param {*} cb 
  */
-export function fetchSpikeDatas(data, cb){
-    const newURL = "/repository/" + id
-    options.method = 'POST'
-    options.body = data
-    return fetch(newURL, options)
-    .then(response => response.json())
-    .then(cb)
+export function fetchEvalutionProject(file_name, cb){
+  const newURL = "/sound/" + file_name
+  options.method = 'POST'
+  return fetch(newURL, options)
+  .then(response => response.json())
+  .then(cb)
+}
+
+export function fetchUploadProject(file_name, cb){
+  const newURL = "/location/" + file_name
+  options.method = 'POST'
+  return fetch(newURL, options)
+  .then(response => response.json())
+  .then(cb)
 }

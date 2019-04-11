@@ -8,19 +8,93 @@ class LocationChart extends Component {
         super(props)
         this.svgRef = React.createRef()
         this.state = {
-            xWidth: '',
-            yHeight: '',
             radius: '',
+            target: '',
         }
-
-
     }
 
     componentDidMount(){
-        console.log(this.props)
         this.createLocationGraph(this.props)
     }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.screenWidth !== this.props.screenWidth){
+            console.log("width changed!")
+            this.clearSVG()
+            this.resizeChart(nextProps)
+        }else{
+            console.log("update changed!")
+            this.updateNewModules(nextProps)
+        }
+    }
+
+    resizeChart = (props) => {
+        this.createLocationGraph(props)
+    }
+
+    clearSVG(){
+        var el = this.svgRef.current
+        d3.select(el).select("svg").data([]).exit().remove()
+    }
+    clearLocation(){
+        var el = this.svgRef.current
+        d3.select(el).select("svg").select("#locationcircle").data([]).exit().remove()
+    }
+
+    clearEvalutionResult(){
+        var el = this.svgRef.current
+        d3.select(el).select("svg").select("#locationpath").data([]).exit().remove()
+    }
+
+    updateNewModules = (props) => {
+        var el = this.svgRef.current
+        var width = props.screenWidth
+        var height = props.screenHeight
+        var radius = Math.min(width, height) / 2 - 30;
+        console.log("radius: ", radius)
+        var maxVal = 16
+        var r = d3.scaleLinear()
+            .domain([0, maxVal])
+            .range([0, radius])
+
+        var target = props.stateAll.target
+
+        // add location data
+        var angle = parseInt(target)-90
+        console.log("angle: ", angle)
+        var xIndex = radius*Math.cos(angle*Math.PI/180)
+        var yIndex = radius*Math.sin(angle*Math.PI/180)
+
+        d3.select(el).select("svg").select("#locationcircle").attr("r", 6).attr("transform", "translate(" + xIndex + "," + yIndex + ")")
+
+        if(props.stateAll.conv1.length<1){
+            d3.select(el).select("svg").select("#locationpath").datum([]).attr("d", [])
+            .attr("transform", function(d) {
+            return "rotate(" + (-90) + ")"; });
+        }else{
+            var max_out = props.stateAll.max_out
+            var designData1 = parseInt(max_out)-15
+            var designData2 = parseInt(max_out)+15
+            var designData = [[designData1, designData2],[0, 0]];
+            console.log("designData: ", designData)
+            var data = [
+                [maxVal*Math.cos(designData[0][0]*Math.PI/180), maxVal*Math.sin(designData[0][0]*Math.PI/180)],
+                [maxVal*Math.cos(designData[0][1]*Math.PI/180), maxVal*Math.sin(designData[0][1]*Math.PI/180)],
+                [designData[1][1]*Math.cos(designData[0][1]*Math.PI/180), designData[1][1]*Math.sin(designData[0][1]*Math.PI/180)],
+                [designData[1][0]*Math.cos(designData[0][0]*Math.PI/180), designData[1][0]*Math.sin(designData[0][0]*Math.PI/180)]
+            ];
     
+            var path1 = "M" + r(data[0][0])+","+r(data[0][1])+" "+
+                "A"+ r(maxVal)+","+r(maxVal)+" 0 0,1 "+ r(data[1][0])+","+r(data[1][1])+" "+
+                "L" + r(data[2][0])+","+r(data[2][1])+" "+
+                "L" + r(data[3][0])+","+r(data[3][1])+" Z";
+    
+            d3.select(el).select("svg").select("#locationpath").datum(data).attr("d", path1)
+                .attr("transform", function(d) {
+                return "rotate(" + (-90) + ")"; });
+        }       
+    }
+   
     createLocationGraph(props){
         var el = this.svgRef.current;
         var width = props.screenWidth
@@ -28,14 +102,15 @@ class LocationChart extends Component {
         var radius = Math.min(width, height) / 2 - 30;
         var maxVal = 16
         var r = d3.scaleLinear()
-        .domain([0, maxVal])
-        .range([0, radius]);
+            .domain([0, maxVal])
+            .range([0, radius]);
 
         var svg = d3.select(el).append("svg")
             .attr("width", width)
             .attr("height", height)
             .append("g")
             .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+        console.log("svg", svg)
 
         var gr = svg.append("g")
             .attr("class", "r axis")
@@ -46,13 +121,6 @@ class LocationChart extends Component {
 
         gr.append("circle")
             .attr("r", r);
-
-
-        // gr.append("text")
-        //     .attr("y", function(d) { return -r(d) - 4; })
-        //     .attr("transform", "rotate(45)")
-        //     .style("text-anchor", "middle")
-        //     .text(function(d) { return d; });
 
         var ga = svg.append("g")
             .attr("class", "a axis")
@@ -73,19 +141,6 @@ class LocationChart extends Component {
             .text(function(d) {
                 return d + "°"; });
         
-
-        // central sound lisener
-        // var central_positions = [-45, 45, 135, 225]
-        // for(var position in central_positions){
-        //     console.log("position: ", position)
-        //     var myRadius = 30
-        //     var xIndex = myRadius*Math.cos(position*Math.PI/180)
-        //     var yIndex = myRadius*Math.sin(position*Math.PI/180)
-        //     svg.append("circle")
-        //    .attr("r", 6)
-        //    .attr("class", "central_circle")
-        //    .attr("transform", "translate(" + xIndex + "," + yIndex + ")")
-        // }
         var myRadius = 30
         var xIndex = myRadius*Math.cos(-45*Math.PI/180)
         var yIndex = myRadius*Math.sin(-45*Math.PI/180)
@@ -113,8 +168,12 @@ class LocationChart extends Component {
             .attr("transform", "translate(" + xIndex4 + "," + yIndex4 + ")")
 
         //  add data
-        // var designData = [[172, 200],[2.86, 5.06]];
-        var designData = [[0, 30],[0, 0]];
+        var target = props.stateAll.target
+        var max_out = props.stateAll.max_out
+        var designData1 = parseInt(max_out)-15
+        var designData2 = parseInt(max_out)+15
+        var designData = [[designData1, designData2],[0, 0]];
+        console.log("designData: ", designData)
         var data = [
             [maxVal*Math.cos(designData[0][0]*Math.PI/180), maxVal*Math.sin(designData[0][0]*Math.PI/180)],
             [maxVal*Math.cos(designData[0][1]*Math.PI/180), maxVal*Math.sin(designData[0][1]*Math.PI/180)],
@@ -127,62 +186,43 @@ class LocationChart extends Component {
             "L" + r(data[2][0])+","+r(data[2][1])+" "+
             "L" + r(data[3][0])+","+r(data[3][1])+" Z";
 
-        svg.append("path")
+        // add location data
+        var angle = parseInt(target)-90
+        var xIndex = radius*Math.cos(angle*Math.PI/180)
+        var yIndex = radius*Math.sin(angle*Math.PI/180)
+
+        if(props.stateAll.conv1.length<1){
+            svg.append("path")
+            .datum([])
+            .attr("class", "line")
+            .attr("id", "locationpath")
+            .attr("d", [])
+            .attr("transform", function(d) {
+                return "rotate(" + (-90) + ")"; });
+            
+            svg.append("circle")
+            .attr("r", 0)
+            .attr("id", "locationcircle")
+            .attr("class", "location_circle")
+            .attr("transform", "translate(" + xIndex + "," + yIndex + ")")
+        }else{
+            svg.append("path")
             .datum(data)
             .attr("class", "line")
+            .attr("id", "locationpath")
             .attr("d", path1)
             .attr("transform", function(d) {
                 return "rotate(" + (-90) + ")"; });
-
-        // add location data
-        var angle = -70
-        var xIndex = radius*Math.cos(angle*Math.PI/180)
-        var yIndex = radius*Math.sin(angle*Math.PI/180)
-        var location_circle = svg.append("circle")
-                            .attr("r", 6)
-                            .attr("class", "location_circle")
-                            .attr("transform", "translate(" + xIndex + "," + yIndex + ")")
+            
+            svg.append("circle")
+            .attr("r", 6)
+            .attr("id", "locationcircle")
+            .attr("class", "location_circle")
+            .attr("transform", "translate(" + xIndex + "," + yIndex + ")")
+        }
         
         // location_circle.append("image")
         //                 .attr("xlink:href", require('../image/nus_logo.png'))
-        // var yHeight = this.props.height - this.props.margin.top - this.props.margin.bottom;
-        // this.setState({
-        //   yRange: this.props.yRange,
-        //   yScales: this.props.yScales,
-        //   ySteps: this.props.ySteps,
-        //   yAxises: this.props.yAxises,
-        //   yHeight: yHeight,
-        // }, function(){
-        //   this.resizeChart(this.props)
-        // })
-    }
-    componentWillReceiveProps(nextProps){
-        // if(nextProps.width !== this.props.width){
-        //     this.resizeChart(nextProps)
-        // }else{
-        //     this.updateNewModules(nextProps)
-        // }
-    }
-    
-    componentWillUpdate(nextProps){
-        // var el = this.svgRef.current
-        // var that = this
-
-        // var svg = d3.select(el).select("svg")
-        // var tips = svg.select("g.tips")
-        
-        // svg.on("mouseover", function() {
-        //     var m = d3.mouse(this)
-        //     var position = that.getTipsPosition(m)
-        //     var x = that.state.invertX(m[0]-nextProps.margin.left)
-        //     tips.select(".tips-text1").text(that.props.xValues[x])      
-        //     tips.transition()
-        //         .attr("transform","translate("+position[0]+","+position[1]+")")
-        //     tips.style("display", "block")
-        //     })
-        //     .on("mouseout", function(){
-        //     tips.style("display", "none")
-        //     })
     }
 
     render(){
