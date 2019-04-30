@@ -60,7 +60,8 @@ class LocationChart extends Component {
         var target = props.stateAll.target
 
         // add location data
-        var angle = parseInt(target)-90
+        // var angle = parseInt(target)-90
+        var angle = parseInt(target)
         console.log("angle: ", angle)
         var xIndex = radius*Math.cos(angle*Math.PI/180)
         var yIndex = radius*Math.sin(angle*Math.PI/180)
@@ -70,7 +71,8 @@ class LocationChart extends Component {
         if(props.stateAll.conv1.length<1){
             d3.select(el).select("svg").select("#locationpath").datum([]).attr("d", [])
             .attr("transform", function(d) {
-            return "rotate(" + (-90) + ")"; });
+            // return "rotate(" + (-90) + ")"; });
+            return "rotate(" + (0) + ")"; });
         }else{
             var max_out = props.stateAll.max_out
             var designData1 = parseInt(max_out)-15
@@ -91,7 +93,8 @@ class LocationChart extends Component {
     
             d3.select(el).select("svg").select("#locationpath").datum(data).attr("d", path1)
                 .attr("transform", function(d) {
-                return "rotate(" + (-90) + ")"; });
+                // return "rotate(" + (-90) + ")"; });
+                return "rotate(" + (0) + ")"; });
         }       
     }
    
@@ -128,16 +131,18 @@ class LocationChart extends Component {
             .data(d3.range(0, 360, 30))
             .enter().append("g")
             .attr("transform", function(d) {
-                return "rotate(" + (d-90) + ")"; });
+                // return "rotate(" + (d-90) + ")"; });
+                return "rotate(" + d + ")"; });
 
         ga.append("line")
             .attr("x2", radius);
 
         ga.append("text")
             .attr("x", (radius + 6))
-            .attr("dy", ".35em")
-            .style("text-anchor", function(d) { return d > 180 && d < 360 ? "end" : null; })
-            .attr("transform", function(d) { return d > 180 && d < 360 ? "rotate(180 " + (radius + 6) + ",0)" : null; })
+            .attr("dy", ".45em")
+            .style("font-size", "14px")
+            .style("text-anchor", function(d) { return d > 90 && d < 270 ? "end" : null; })
+            .attr("transform", function(d) { return d > 90 && d < 270 ? "rotate(180 " + (radius + 6) + ",0)" : null; })
             .text(function(d) {
                 return d + "°"; });
         
@@ -187,7 +192,8 @@ class LocationChart extends Component {
             "L" + r(data[3][0])+","+r(data[3][1])+" Z";
 
         // add location data
-        var angle = parseInt(target)-90
+        // var angle = parseInt(target)-90
+        var angle = parseInt(target)
         var xIndex = radius*Math.cos(angle*Math.PI/180)
         var yIndex = radius*Math.sin(angle*Math.PI/180)
 
@@ -198,7 +204,8 @@ class LocationChart extends Component {
             .attr("id", "locationpath")
             .attr("d", [])
             .attr("transform", function(d) {
-                return "rotate(" + (-90) + ")"; });
+                // return "rotate(" + (-90) + ")"; });
+                return "rotate(" + (0) + ")"; });
             
             svg.append("circle")
             .attr("r", 0)
@@ -212,7 +219,8 @@ class LocationChart extends Component {
             .attr("id", "locationpath")
             .attr("d", path1)
             .attr("transform", function(d) {
-                return "rotate(" + (-90) + ")"; });
+                // return "rotate(" + (-90) + ")"; });
+                return "rotate(" + (0) + ")"; });
             
             svg.append("circle")
             .attr("r", 6)

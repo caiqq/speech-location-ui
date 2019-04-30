@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import '../stypes/LocalizationPanel.css'
 import LocationChart from './LocationChart'
-import {Row, Col, Button } from 'antd';
 import Papa from 'papaparse'
 import {fetchUploadProject, fetchEvalutionProject} from '../utils/fetchs'
 import store from '../store/configStore'
 import configure from '../config.json'
+import {Row, Col, Button, Icon } from 'antd';
 
 class LocalizationPanel extends Component {
     constructor(props){
@@ -14,19 +14,26 @@ class LocalizationPanel extends Component {
         this.state = {
           screenWidth: 1000,
           screenHeight: 430,
+          times: 0,
         }
     }
 
     onResize = () => {
       this.setState({
         screenWidth: window.innerWidth*0.56,
-        screenHeight: window.innerHeight*0.9,
+        screenHeight: window.innerHeight*0.82,
       })
     }
 
     componentWillMount(){
       window.addEventListener('resize', this.onResize, false)
       this.onResize()
+    }
+
+    componentWillReceiveProps(nextProps){
+      this.setState({
+        times: nextProps.times,
+      })
     }
 
     parseUploadData=(result)=>{
@@ -82,14 +89,37 @@ class LocalizationPanel extends Component {
         }
       })
     }
- 
+
+    onSubBtn = (e) => {
+      this.props.subTimesState()
+    }
+    
+    onAddBtn = (e) => {
+      this.props.addTimesState()
+    }
+
     render(){
       console.log("localization render!")
       
       const stateAll = this.props.stateAll
+      const ButtonGroup = Button.Group;
+      var newTime = "Time: " + this.state.times
       console.log(stateAll)
       return(
           <div className="LocalizationPanel">
+            <Row>
+                <Col span={3}>
+                    <ButtonGroup>
+                        <Button onClick={this.onSubBtn}>
+                            <Icon type="left" />
+                        </Button>
+                        <Button onClick={this.onAddBtn}>
+                            <Icon type="right" />
+                        </Button>
+                    </ButtonGroup>
+                </Col>
+                <Col span={2} className="timeText">{newTime}</Col>
+            </Row>
             <LocationChart
               screenWidth={this.state.screenWidth}
               screenHeight={this.state.screenHeight}

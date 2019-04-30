@@ -6,16 +6,39 @@ import DataPanel from './DataPanel';
 import LocalizationPanel from './LocalizationPanel'
 
 class MainBody extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            times: 0
+        }
+    }
+
+    subTimesState = () => {
+        if(this.state.times > 1){
+            this.setState({
+                times: this.state.times - 1
+            })
+        }
+    }
+
+    addTimesState = () => {
+        if(this.state.times < 10){
+            this.setState({
+                times: this.state.times + 1
+            })
+        }
+    }
+
     render(){
         const statesAll = this.props.stateAll;
         console.log("mainbody render!")
         return(
             <Row type="flex" justify="start">
                 <Col span={14}>
-                    <LocalizationPanel stateAll={statesAll}></LocalizationPanel>
+                    <LocalizationPanel stateAll={statesAll} times={this.state.times} addTimesState={this.addTimesState} subTimesState={this.subTimesState}></LocalizationPanel>
                 </Col>
                 <Col span={10}>
-                    <DataPanel stateAll={statesAll}></DataPanel>                    
+                    <DataPanel stateAll={statesAll} times={this.state.times}></DataPanel>                    
                 </Col>
             </Row>
         )
