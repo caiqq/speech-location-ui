@@ -9,7 +9,7 @@ class MainBody extends Component {
     constructor(props){
         super(props)
         this.state = {
-            times: 0
+            times: 8
         }
     }
 

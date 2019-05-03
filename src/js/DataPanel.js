@@ -38,7 +38,7 @@ class DataPanel extends Component {
                 <Row>
                     <Col>
                         {/* <DotChart conv={conv1} times={this.state.times} title={title1}></DotChart> */}
-                        <myDiv></myDiv>
+                        {/* <myDiv></myDiv> */}
                         <PlotlyDotChart conv={conv1} times={this.state.times} title={title1}></PlotlyDotChart>
                     </Col>                    
                 </Row>
