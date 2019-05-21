@@ -1,7 +1,8 @@
 {
     "action": {
         "upload": "upload",
-        "evalution": "evalution"
+        "evalution": "evalution",
+        "time": "time"
     },
     "states": {
         "target": "target",

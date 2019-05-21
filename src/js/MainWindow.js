@@ -14,11 +14,12 @@ class MainWindow extends Component {
 
     render(){
         const statesAll = this.props.stateAll.project;
+        const stateTime = this.props.stateAll.time;
         console.log("mainwindow render!")
         return(
             <div id="MainWindow">
                 <NewHeader title={configuration.titleName}></NewHeader>
-                <MainBody stateAll={statesAll}></MainBody>
+                <MainBody stateAll={statesAll} stateTime={stateTime}></MainBody>
             </div>
         )
     }

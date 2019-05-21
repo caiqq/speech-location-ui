@@ -14,7 +14,7 @@ class LocalizationPanel extends Component {
         this.state = {
           screenWidth: 1000,
           screenHeight: 430,
-          times: 0,
+          times: props.times,
         }
     }
 
@@ -53,16 +53,20 @@ class LocalizationPanel extends Component {
       console.log("file path:", fileName)
 
       fetchEvalutionProject(fileName, (text) => {
-        try{         
+        try{  
           store.dispatch({
+            type: configure.action.time,
+            time: 10
+          }).then(store.dispatch({
             type: configure.action.evalution,
             conv1: text.conv1,
+            conv1_1: text.conv1_1,
             conv2: text.conv2,
             conv3: text.conv3,
             conv4: text.conv4,
             out_prob: text.outProb,
             max_out: text.maxOut
-          })
+          }))       
         }catch(error){
           console.log("load project JSON parse error")
           console.log(error)
@@ -82,7 +86,10 @@ class LocalizationPanel extends Component {
             type: configure.action.upload,
             target: text.location
           })
-
+          store.dispatch({
+            type: configure.action.time,
+            time: 0
+          })
         }catch(error){
           console.log("load project JSON parse error")
           console.log(error)
@@ -90,17 +97,35 @@ class LocalizationPanel extends Component {
       })
     }
 
+    subTimesState = () => {
+      if(this.state.times > 1){
+          store.dispatch({
+              type: configure.action.time,
+              time: this.state.times - 1
+          })
+      }
+    }
+
+    addTimesState = () => {
+        if(this.state.times < 10){
+            store.dispatch({
+                type: configure.action.time,
+                time: this.state.times + 1
+            })
+        }
+    }
+
     onSubBtn = (e) => {
-      this.props.subTimesState()
+      this.subTimesState()
     }
     
     onAddBtn = (e) => {
-      this.props.addTimesState()
+      this.addTimesState()
     }
 
     render(){
       console.log("localization render!")
-      
+    
       const stateAll = this.props.stateAll
       const ButtonGroup = Button.Group;
       var newTime = "Time: " + this.state.times
@@ -118,7 +143,7 @@ class LocalizationPanel extends Component {
                         </Button>
                     </ButtonGroup>
                 </Col>
-                <Col span={2} className="timeText">{newTime}</Col>
+                <Col span={5} className="timeText">{newTime}</Col>
             </Row>
             <LocationChart
               screenWidth={this.state.screenWidth}

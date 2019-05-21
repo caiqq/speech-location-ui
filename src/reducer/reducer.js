@@ -7,6 +7,7 @@ function projectReducer(state = {}, action){
       ...state,
       target: action.target,
       conv1: [],
+      conv1_1: [],
       conv2: [],
       conv3: [],
       conv4: [],
@@ -17,6 +18,7 @@ function projectReducer(state = {}, action){
     return{
       ...state,
       conv1: action.conv1,
+      conv1_1: action.conv1_1,
       conv2: action.conv2,
       conv3: action.conv3,
       conv4: action.conv4,
@@ -28,6 +30,7 @@ function projectReducer(state = {}, action){
       ...state,
       target: "0",
       conv1: [],
+      conv1_1: [],
       conv2: [],
       conv3: [],
       conv4: [],
@@ -37,8 +40,19 @@ function projectReducer(state = {}, action){
   } 
 }
 
+function timeReducer(state = 0, action){
+  if(action.type === configure.action.time){
+    return{
+      time: action.time,
+    }
+  }else{
+    return state
+  }
+}
+
 const rootReducer = combineReducers({
-    project: projectReducer,
-  });
+  project: projectReducer,
+  time: timeReducer,
+});
 
 export default rootReducer;

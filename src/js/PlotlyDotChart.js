@@ -1,72 +1,130 @@
 import React, { Component } from 'react';
-// import createPlotlyComponent from 'react-plotlyjs';
-// import Plot from 'react-plotly.js';
-import echarts from 'echarts/lib/echarts'
-import { Recharts, Components } from 'react-component-echarts'
-import datas from '../data.json'
-const { XAxis, YAxis, Series } = Components
 
+import createPlotlyComponent from 'react-plotlyjs';
+import Plotly from 'plotly.js-dist'
 
 class PlotlyDotChart extends Component {
 
     constructor(props){
         super(props)
+        this.state = {
+            dot_data: [],
+            times: props.times,
+            title: "",
+        }
+    }
+    
+    componentWillReceiveProps(nextProps){
+        var dataAll = this.createDatas(nextProps)
+        this.setState({
+            dot_data: dataAll,
+            times: nextProps.times,
+            title: nextProps.title,
+        })
     }
 
-    getrandom(num , mul) 
-	{
-        var value = [ ];
-        for(var i=0;i<=num;i++)
-        {
-            var rand = Math.random() * mul;
-            value.push(rand);
+    createDatas(props){
+        var xIndex = []
+        var yIndex = []
+        var zIndex = []
+        console.log("dataAll")
+        console.log(props)
+        var datasAll = props.conv
+        
+        if(datasAll.length > 0){
+            console.log("dataAll z: ")
+            for(var z=0; z < datasAll[props.times-1].length; z++){
+                for(var row=0; row < datasAll[props.times-1][z].length; row++){
+                    for(var col=0; col < datasAll[props.times-1][z][row].length; col++){
+                        if(datasAll[props.times-1][z][row][col] === 1){
+                            zIndex.push(z)
+                            yIndex.push(row)
+                            xIndex.push(col)
+                        }
+                    }
+                }
+            }
+            
         }
-        return value;
+        var datas = [{
+            x: xIndex,
+            y: yIndex,
+            z: zIndex,
+            mode: 'markers',
+            type: 'scatter3d',
+            marker: {
+              color: 'rgb(23, 190, 207)',
+              size: 2
+            }
+        },{
+            alphahull: 7,
+            opacity: 0.1,
+            type: 'mesh3d',
+            x: xIndex,
+            y: yIndex,
+            z: zIndex
+        }];
+        
+        return datas
     }
 
     render() {
-        console.log(datas)
-        var data = datas
-        
-        var symbolSize = 2.5;
-        var option = {
-            grid3D: {},
-            xAxis3D: {
-                type: 'category'
-            },
-            yAxis3D: {},
-            zAxis3D: {},
-            dataset: {
-                dimensions: [
-                    'Income',
-                    'Life Expectancy',
-                    'Population',
-                    'Country',
-                    {name: 'Year', type: 'ordinal'}
-                ],
-                source: data
-            },
-            series: [
-                {
-                    type: 'scatter3D',
-                    symbolSize: symbolSize,
-                    encode: {
-                        x: 'Country',
-                        y: 'Life Expectancy',
-                        z: 'Income',
-                        tooltip: [0, 1, 2, 3, 4]
-                    }
-                }
-            ]
+        const PlotlyComponent = createPlotlyComponent(Plotly);
+        var data = this.state.dot_data
+
+        var maxX = 1
+        var maxY = 1
+        var maxZ = 1
+        if(this.props.conv.length > 0){
+            var maxX = this.props.conv[0][0][0].length
+            var maxY = this.props.conv[0][0].length
+            var maxZ = this.props.conv[0].length
+        }
+
+        var layout = {
+            autosize: true,
+            height: window.innerHeight / 5,
+            // scene: {
+            //     aspectratio: {
+            //         x: maxX,
+            //         y: maxY,
+            //         z: maxZ
+            //     }
+            //     // camera: {
+            //     //     center: {
+            //     //         x: maxX/2,
+            //     //         y: maxX/2,
+            //     //         z: maxX/2
+            //     //     },
+            //     //     eye: {
+            //     //         x: maxX/2,
+            //     //         y: maxX/2,
+            //     //         z: maxX/2
+            //     //     },
+            //     //     up: {
+            //     //         x: 0,
+            //     //         y: 0,
+            //     //         z: 1
+            //     //     }
+            //     // }
+            //     // xaxis: {
+            //     //     type: 'linear',
+            //     //     zeroline: false
+            //     // },
+            //     // yaxis: {
+            //     //     type: 'linear',
+            //     //     zeroline: false
+            //     // },
+            //     // zaxis: {
+            //     //     type: 'linear',
+            //     //     zeroline: false
+            //     // }
+            // },
+            // title: '3d point clustering',
+            width: window.innerWidth/3
         };
         return (
-            <Recharts option={option}>
-                {/* <YAxis type="value" />
-                <XAxis type="category" data={["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]} />
-                <Series data={[820,932,901,934,1290,1330,1320]} type="line" smooth={true} /> */}
-            </Recharts>
-            // <PlotlyComponent className="whatever" data={data} layout={layout} config={config} />
-            // <Plot data={data} layout={layout} config={config}></Plot>
+            <PlotlyComponent className="whatever" data={data} layout={layout}/>
         )
     }
 }

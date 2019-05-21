@@ -29,9 +29,9 @@ class DotChart extends Component{
         var datas = []
         var datasAll = props.conv
         if(datasAll.length > 0){
-            for(var row=0; row < datasAll[this.state.times].length; row++){
-                for(var col=0; col < datasAll[this.state.times][row].length; col++){
-                    if(datasAll[this.state.times][row][col] === 1){
+            for(var row=0; row < datasAll[this.state.times-1].length; row++){
+                for(var col=0; col < datasAll[this.state.times-1][row].length; col++){
+                    if(datasAll[this.state.times-1][row][col] === 1){
                         datas.push({"time": col, "neuron": row})
                     }
                 }
