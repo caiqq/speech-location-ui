@@ -46,18 +46,17 @@ class LocalizationPanel extends Component {
     
     onEvalutionClick = (e) => {
       console.log("on evalution!")
-      // this.props.updateOpenState(false);
-      
+      // this.props.updateOpenState(false);      
       const filePath = this.inputFilePath.current.files[0]
       let fileName = filePath.name.split('.')[0]
-      console.log("file path:", fileName)
 
       fetchEvalutionProject(fileName, (text) => {
         try{  
           store.dispatch({
             type: configure.action.time,
             time: 10
-          }).then(store.dispatch({
+          })
+          store.dispatch({
             type: configure.action.evalution,
             conv1: text.conv1,
             conv1_1: text.conv1_1,
@@ -65,8 +64,10 @@ class LocalizationPanel extends Component {
             conv3: text.conv3,
             conv4: text.conv4,
             out_prob: text.outProb,
-            max_out: text.maxOut
-          }))       
+            max_out: text.maxOut,
+            max_out_list: text.max_out_list,
+            out_prob_list: text.display_grid_out
+          })      
         }catch(error){
           console.log("load project JSON parse error")
           console.log(error)
@@ -81,7 +82,6 @@ class LocalizationPanel extends Component {
 
       fetchUploadProject(fileName, (text) => {
         try{
-          console.log("upload data: ", text)
           store.dispatch({
             type: configure.action.upload,
             target: text.location
@@ -129,7 +129,6 @@ class LocalizationPanel extends Component {
       const stateAll = this.props.stateAll
       const ButtonGroup = Button.Group;
       var newTime = "Time: " + this.state.times
-      console.log(stateAll)
       return(
           <div className="LocalizationPanel">
             <Row>
@@ -149,6 +148,7 @@ class LocalizationPanel extends Component {
               screenWidth={this.state.screenWidth}
               screenHeight={this.state.screenHeight}
               stateAll = {stateAll}
+              times = {this.state.times}
             />
             <Row type="flex" justify="space-around">
               <Col span={4}>

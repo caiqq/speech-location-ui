@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import {
     Chart,
     Geom,
-    Axis,
-    Tooltip,
-    Label
+    Tooltip
   } from "bizcharts"
 
 class DotChart extends Component{
@@ -17,9 +15,8 @@ class DotChart extends Component{
         }
     }
     componentWillReceiveProps(nextProps){
-        var dataAll = this.createDatas(nextProps)
         this.setState({
-            dot_data: dataAll,
+            dot_data: this.createDatas(nextProps),
             times: nextProps.times,
             title: nextProps.title,
         })
@@ -29,9 +26,9 @@ class DotChart extends Component{
         var datas = []
         var datasAll = props.conv
         if(datasAll.length > 0){
-            for(var row=0; row < datasAll[this.state.times-1].length; row++){
-                for(var col=0; col < datasAll[this.state.times-1][row].length; col++){
-                    if(datasAll[this.state.times-1][row][col] === 1){
+            for(var row=0; row < datasAll[props.times-1].length; row++){
+                for(var col=0; col < datasAll[props.times-1][row].length; col++){
+                    if(datasAll[props.times-1][row][col] === 1){
                         datas.push({"time": col, "neuron": row})
                     }
                 }
@@ -43,6 +40,7 @@ class DotChart extends Component{
     render(){
         // var data = [{"height": 10, "weight": 10}, {"height": 5, "weight": 10}, {"height": 3, "weight": 3}]
         var data = this.state.dot_data
+        console.log("dot chart render: ")
         var title = this.state.title
         return(
             <div>

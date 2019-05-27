@@ -13,6 +13,8 @@ function projectReducer(state = {}, action){
       conv4: [],
       out_prob: [],
       max_out: "0",
+      max_out_list: [],
+      out_prob_list: [],
     }
   }else if(action.type === configure.action.evalution){
     return{
@@ -24,6 +26,12 @@ function projectReducer(state = {}, action){
       conv4: action.conv4,
       out_prob: action.out_prob,
       max_out: action.max_out,
+      max_out_list: action.max_out_list,
+      out_prob_list: action.out_prob_list,
+    }
+  }else if(action.type === configure.action.time){
+    return {
+      ...state,
     }
   }else{
     return {
@@ -36,6 +44,8 @@ function projectReducer(state = {}, action){
       conv4: [],
       out_prob: [],
       max_out: "0",
+      max_out_list: [],
+      out_prob_list: [],
     }
   } 
 }

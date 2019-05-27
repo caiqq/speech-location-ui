@@ -27,12 +27,9 @@ class PlotlyDotChart extends Component {
         var xIndex = []
         var yIndex = []
         var zIndex = []
-        console.log("dataAll")
-        console.log(props)
         var datasAll = props.conv
         
         if(datasAll.length > 0){
-            console.log("dataAll z: ")
             for(var z=0; z < datasAll[props.times-1].length; z++){
                 for(var row=0; row < datasAll[props.times-1][z].length; row++){
                     for(var col=0; col < datasAll[props.times-1][z][row].length; col++){
@@ -43,9 +40,9 @@ class PlotlyDotChart extends Component {
                         }
                     }
                 }
-            }
-            
+            }            
         }
+
         var datas = [{
             x: xIndex,
             y: yIndex,
@@ -69,6 +66,7 @@ class PlotlyDotChart extends Component {
     }
 
     render() {
+        console.log("plotly Dot Chart render: ")
         const PlotlyComponent = createPlotlyComponent(Plotly);
         var data = this.state.dot_data
 
@@ -76,51 +74,14 @@ class PlotlyDotChart extends Component {
         var maxY = 1
         var maxZ = 1
         if(this.props.conv.length > 0){
-            var maxX = this.props.conv[0][0][0].length
-            var maxY = this.props.conv[0][0].length
-            var maxZ = this.props.conv[0].length
+            maxX = this.props.conv[0][0][0].length
+            maxY = this.props.conv[0][0].length
+            maxZ = this.props.conv[0].length
         }
 
         var layout = {
             autosize: true,
             height: window.innerHeight / 5,
-            // scene: {
-            //     aspectratio: {
-            //         x: maxX,
-            //         y: maxY,
-            //         z: maxZ
-            //     }
-            //     // camera: {
-            //     //     center: {
-            //     //         x: maxX/2,
-            //     //         y: maxX/2,
-            //     //         z: maxX/2
-            //     //     },
-            //     //     eye: {
-            //     //         x: maxX/2,
-            //     //         y: maxX/2,
-            //     //         z: maxX/2
-            //     //     },
-            //     //     up: {
-            //     //         x: 0,
-            //     //         y: 0,
-            //     //         z: 1
-            //     //     }
-            //     // }
-            //     // xaxis: {
-            //     //     type: 'linear',
-            //     //     zeroline: false
-            //     // },
-            //     // yaxis: {
-            //     //     type: 'linear',
-            //     //     zeroline: false
-            //     // },
-            //     // zaxis: {
-            //     //     type: 'linear',
-            //     //     zeroline: false
-            //     // }
-            // },
-            // title: '3d point clustering',
             width: window.innerWidth/3
         };
         return (
