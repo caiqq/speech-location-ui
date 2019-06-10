@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'; 
-import { _3d } from './d3-3d'
+import { _3d } from './d3-3d_2'
 
-class D3DotChart extends Component {
+class D3DotChart2 extends Component {
     constructor(props) {
         super(props)
         this.svgRef = React.createRef()
@@ -63,9 +63,8 @@ class D3DotChart extends Component {
             if(xMax%2 !== 0){
                 xMax += 1
             }
-
             // maxVal = Math.max(xMax, yMax, zMax)
-            maxVal = xMax
+            maxVal = zMax
 
             console.log("x: ", xMax)
             console.log("y: ", yMax)
@@ -75,9 +74,10 @@ class D3DotChart extends Component {
 
             var mXMax = parseInt(xMax/2, 10)
             var mZMax = parseInt(zMax/2, 10)
-            for(var zIndex = -mZMax; zIndex < mZMax; zIndex++){
-                for(var xIndex = -mXMax; xIndex < mXMax; xIndex++){               
-                    xGridArray.push([xIndex, 1, zIndex])                   
+        
+            for(var xIndex = -mXMax; xIndex < mXMax; xIndex++){  
+                for(var zIndex = -mZMax; zIndex < mZMax; zIndex++){             
+                    xGridArray.push([zIndex, 1, xIndex])                   
                 }
             }
 
@@ -85,7 +85,7 @@ class D3DotChart extends Component {
                 for(var row=0; row < Datas[props.times-1][z].length; row++){
                     for(var col=0; col < Datas[props.times-1][z][row].length; col++){
                         if(Datas[props.times-1][z][row][col] === 1){
-                            scatter.push({x: col-mXMax, y: -row/12, z: z-mZMax, id: 'point_' + cnt++ })
+                            scatter.push({x: z-mZMax, y: -row/8, z: col-mXMax, id: 'point_' + cnt++ })
                         }
                     }
                 }
@@ -96,8 +96,6 @@ class D3DotChart extends Component {
 
     draw3dGraph = (props, svg) => {       
         // add data
-        console.log("svg: ")
-        console.log(svg)
         var graphData = this.createData(props.conv, props)
         var xGridArray = graphData[0]
         var scatter = graphData[1]
@@ -110,10 +108,13 @@ class D3DotChart extends Component {
         var originHeight = height*0.5
 
         var origin = [originWidth, originHeight], scale = maxVal*0.8, key = function (d) { return d.id; };
-        var startAngle = Math.PI / 10
-
+        var startAngle = Math.PI / 8
+        
+        // svg.append("circle").attr("full", "lightgrey").attr("r", 40)
+        //     .attr("transform", "translate(" + 100 + "," + 100 + ")")
+        
         svg.append('g')
-            .attr("id", "dotchart1")
+            .attr("id", "dotchart2")
 
         // svg.append('g').attr("transform", "translate(" + transform_left + "," + 0 + ")");
 
@@ -139,11 +140,10 @@ class D3DotChart extends Component {
         ];
 
         var tt = 1000
+        var xGrid = svg.select('g#dotchart2').selectAll('path.grid').data(data[0], key);
 
-        var xGrid = svg.select('g#dotchart1').selectAll('path.grid').data(data[0], key);
-        console.log("dialog1 xGrid: ")
+        console.log("xGrid: ")
         console.log(xGrid)
-
         xGrid
             .enter()
             .append('path')
@@ -151,14 +151,17 @@ class D3DotChart extends Component {
             // .merge(xGrid)
             .attr('stroke', 'black')
             .attr('stroke-width', 0.3)
-            .attr('fill', function (d) { return d.ccw ? 'lightgrey' : '#717171'; })
+            .attr('fill', function (d) { return d.ccw ? 'lightgrey' : 'lightblue'; })
             .attr('fill-opacity', 0.9)
             .attr('d', grid3d.draw);
 
         xGrid.exit().remove();
 
+        console.log("xGrid2: ")
+        console.log(xGrid)
+
         /* ----------- POINTS ----------- */
-        var points = svg.select('g#dotchart1').selectAll('circle').data(data[1], key);
+        var points = svg.select('g#dotchart2').selectAll('circle').data(data[1], key);
 
         points
             .enter()
@@ -168,7 +171,7 @@ class D3DotChart extends Component {
             .attr('cx', this.posPointX)
             .attr('cy', this.posPointY)
             // .merge(points)
-            // .transition().duration(tt)
+            .transition().duration(tt)
             .attr('r', 3)
             .attr('fill', 'blue')
             // .attr('stroke', function (d) { return d3.color(color(d.id)).darker(3); })
@@ -186,7 +189,7 @@ class D3DotChart extends Component {
         var width = props.screenWidth
         var height = props.screenHeight
 
-        var svg = d3.select(el).select("svg#chart1svg")
+        var svg = d3.select(el).select("svg#chart2svg")
             .attr("width", width)
             .attr("height", height)
 
@@ -202,7 +205,7 @@ class D3DotChart extends Component {
         var height = props.screenHeight
 
         var svg = d3.select(el).append("svg")
-            .attr("id", "chart1svg")
+            .attr("id", "chart2svg")
             .attr("width", width)
             .attr("height", height)
         this.draw3dGraph(props, svg)       
@@ -227,7 +230,7 @@ class D3DotChart extends Component {
             title = title + " " + "shape(" + z + ", " + y + ", " + x +")"
         }
         return (
-            <div id={"dot_chart_1"}>
+            <div id={"dot_chart_2"}>
                 <div ref={this.svgRef} ></div>
                 <div>{title}</div>
             </div>
@@ -236,4 +239,4 @@ class D3DotChart extends Component {
     }
 }
 
-export default D3DotChart;
+export default D3DotChart2;

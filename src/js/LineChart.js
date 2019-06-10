@@ -35,7 +35,10 @@ class LineChart extends Component{
 
     render() {
         const data = this.state.props_data
-        var title = this.state.title
+        var title = ""
+        if(this.props.out_prob_list.length > 0){
+            title = this.props.title
+        }
         const cols = {
             angle: {
                 alias: "angle"

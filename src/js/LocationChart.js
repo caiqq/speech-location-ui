@@ -65,7 +65,10 @@ class LocationChart extends Component {
         var xIndex = radius*Math.cos(angle*Math.PI/180)
         var yIndex = radius*Math.sin(angle*Math.PI/180)
 
-        d3.select(el).select("svg").select("#locationcircle").attr("r", 6).attr("transform", "translate(" + xIndex + "," + yIndex + ")")
+        d3.select(el).select("svg").select("#locationcircle")
+            .attr("r", 10)
+            .style("fill", "yellow")
+            .attr("transform", "translate(" + xIndex + "," + yIndex + ")")
 
         if(props.stateAll.conv1.length<1){
             d3.select(el).select("svg").select("#locationpath").datum([]).attr("d", [])
@@ -78,9 +81,6 @@ class LocationChart extends Component {
 
             var index_range = this.getIndexRange(max_out, props_list)
 
-            // var max_out = props.stateAll.max_out
-            // var designData1 = parseInt(max_out)-15
-            // var designData2 = parseInt(max_out)+15
             var designData1 = index_range[0]
             var designData2 = index_range[1]
 
@@ -98,16 +98,10 @@ class LocationChart extends Component {
             if(Math.abs(designData2-designData1)>180 && (designData2-designData1 > 0)){
                 large_arc_flag = " 0 1,1 "
             }else if(designData2-designData1<0 && Math.abs(360-designData1+designData2)<180){
-                var large_arc_flag = " 0 0,1 "
+                large_arc_flag = " 0 0,1 "
             }else if(designData2-designData1<0 && Math.abs(360-designData1+designData2)>180){
-                var large_arc_flag = " 0 1,1 "
+                large_arc_flag = " 0 1,1 "
             }
-
-            console.log("rotate data: ")
-            console.log(data)
-            console.log("data1: ", designData1)
-            console.log("data2: ", designData2)
-            console.log("abs_data: ", Math.abs(designData2-designData1))
     
             var path1 = "M" + r(data[0][0])+","+r(data[0][1])+" "+
                 "A"+ r(maxVal)+","+r(maxVal)+ large_arc_flag + r(data[1][0])+","+r(data[1][1])+" "+
@@ -205,9 +199,6 @@ class LocationChart extends Component {
 
         var index_range = this.getIndexRange(max_out, props_list)
 
-        // var max_out = props.stateAll.max_out
-        // var designData1 = parseInt(max_out)-15
-        // var designData2 = parseInt(max_out)+15
         var designData1 = index_range[0]
         var designData2 = index_range[1]
         var designData = [[designData1, designData2],[0, 0]];
@@ -223,16 +214,10 @@ class LocationChart extends Component {
         if(Math.abs(designData2-designData1)>180 && (designData2-designData1 > 0)){
             large_arc_flag = " 0 1,1 "
         }else if(designData2-designData1<0 && Math.abs(360-designData1+designData2)<180){
-            var large_arc_flag = " 0 0,1 "
+            large_arc_flag = " 0 0,1 "
         }else if(designData2-designData1<0 && Math.abs(360-designData1+designData2)>180){
-            var large_arc_flag = " 0 1,1 "
+            large_arc_flag = " 0 1,1 "
         }
-
-        console.log("rotate data: ")
-        console.log(data)
-        console.log("data1: ", designData1)
-        console.log("data2: ", designData2)
-        console.log("abs_data: ", Math.abs(designData2-designData1))
 
         var path1 = "M" + r(data[0][0])+","+r(data[0][1])+" "+
             "A"+ r(maxVal)+","+r(maxVal)+ large_arc_flag + r(data[1][0])+","+r(data[1][1])+" "+
@@ -271,7 +256,8 @@ class LocationChart extends Component {
                 return "rotate(" + (0) + ")"; });
             
             svg.append("circle")
-            .attr("r", 6)
+            .attr("r", 10)
+            .style("fill", "yellow")
             .attr("id", "locationcircle")
             .attr("class", "location_circle")
             .attr("transform", "translate(" + xIndex_location + "," + yIndex_location + ")")

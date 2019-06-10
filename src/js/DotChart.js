@@ -41,7 +41,15 @@ class DotChart extends Component{
         // var data = [{"height": 10, "weight": 10}, {"height": 5, "weight": 10}, {"height": 3, "weight": 3}]
         var data = this.state.dot_data
         console.log("dot chart render: ")
-        var title = this.state.title
+        var title = ""
+        if(this.props.conv.length > 0){
+            title = this.state.title
+            var z = this.props.conv[0].length
+            var y = this.props.conv[0][0].length
+            var x = this.props.conv[0][0][0].length
+            title = title + " " + "shape(" + z + ", " + y +")"
+        }
+        
         return(
             <div>
                 <Chart height={window.innerHeight / 5} data={data} padding={{ top: 20, right: 10, bottom: 20, left: 30 }} forceFit>
