@@ -6,6 +6,7 @@ import {fetchUploadProject, fetchEvalutionProject} from '../utils/fetchs'
 import store from '../store/configStore'
 import configure from '../config.json'
 import {Row, Col, Button, Icon } from 'antd';
+import { NONAME } from 'dns';
 
 class LocalizationPanel extends Component {
     constructor(props){
@@ -86,7 +87,8 @@ class LocalizationPanel extends Component {
         try{
           store.dispatch({
             type: configure.action.upload,
-            target: text.location
+            target: text.location,
+            audioFiles: text.audio_files
           })
           store.dispatch({
             type: configure.action.time,
@@ -129,6 +131,9 @@ class LocalizationPanel extends Component {
       console.log("localization render!")
     
       const stateAll = this.props.stateAll
+      let audio_files = stateAll.audioFiles
+      console.log("audio_files: ")
+      console.log(audio_files)
       const ButtonGroup = Button.Group;
       var newTime = "Time: " + this.state.times
       return(
@@ -145,6 +150,11 @@ class LocalizationPanel extends Component {
                     </ButtonGroup>
                 </Col>
                 <Col span={5} className="timeText">{newTime}</Col>
+                <Col span={3} >
+                  {/* <audio controls={true} style={{display: "none"}}>
+                    <source src={"foo.wav"} type={"audio/wav"}/>
+                  </audio> */}
+                </Col>
             </Row>
             <LocationChart
               screenWidth={this.state.screenWidth}
@@ -157,7 +167,7 @@ class LocalizationPanel extends Component {
                 <input type="file" ref={this.inputFilePath} className="uploadInput"></input>
               </Col>
               <Col span={4}><Button type="primary" className="localizationBtn" onClick={this.onUploadClick}>Upload</Button></Col>
-              <Col span={4}><Button type="primary" className="localizationBtn" onClick={this.onEvalutionClick}>Evalution</Button></Col>
+              <Col span={4}><Button type="primary" className="localizationBtn" onClick={this.onEvalutionClick}>Evaluation</Button></Col>
             </Row>             
           </div>
       )

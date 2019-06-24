@@ -6,6 +6,7 @@ function projectReducer(state = {}, action){
     return{
       ...state,
       target: action.target,
+      audioFiles: action.audioFiles,
       conv1: [],
       conv1_1: [],
       conv2: [],
@@ -41,6 +42,7 @@ function projectReducer(state = {}, action){
     return {
       ...state,
       target: "0",
+      audioFiles: [],
       conv1: [],
       conv1_1: [],
       conv2: [],
